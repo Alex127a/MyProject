@@ -1,0 +1,7 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\MyProjectService.Contracts\MyProjectService.Contracts.csproj" />
+  </ItemGroup>
+
+</Project>

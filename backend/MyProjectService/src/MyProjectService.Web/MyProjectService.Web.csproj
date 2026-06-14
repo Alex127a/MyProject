@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+
+
+  <ItemGroup>
+    <ProjectReference Include="..\MyProjectService.Contracts\MyProjectService.Contracts.csproj" />
+    <ProjectReference Include="..\MyProjectService.Core\MyProjectService.Core.csproj" />
+    <ProjectReference Include="..\MyProjectService.Domain\MyProjectService.Domain.csproj" />
+    <ProjectReference Include="..\MyProjectService.Infrastructure.Postgres\MyProjectService.Infrastructure.Postgres.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" />
+    <PackageReference Include="Scalar.AspNetCore" />
+  </ItemGroup>
+
+</Project>
