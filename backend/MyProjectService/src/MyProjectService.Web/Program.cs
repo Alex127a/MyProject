@@ -12,15 +12,7 @@ var app = builder.Build();
 
 app.MapGet("/", () => "Hello World!");
 
-app.MapHealthChecks("/api/health", new HealthCheckOptions
-{
-    ResponseWriter = async (context, report) =>
-    {
-        context.Response.StatusCode = StatusCodes.Status200OK;
-        context.Response.ContentType = "text/plain; charset=utf-8";
-        await context.Response.WriteAsync("ОК");
-    }
-});
+app.MapGet("/api/health", () => "ОК");
 
 app.MapControllers();   
 
