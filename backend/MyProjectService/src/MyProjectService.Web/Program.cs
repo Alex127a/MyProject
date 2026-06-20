@@ -1,9 +1,16 @@
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.EntityFrameworkCore;
+using MyProjectService.Infrastructure.Postgres;
 using Scalar.AspNetCore;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddOpenApi();
+
+builder.Services.AddDbContext<AppDBContext>(options =>
+    options.UseNpgsql(connectionString));
 
 builder.Services.AddControllers();
 builder.Services.AddHealthChecks();

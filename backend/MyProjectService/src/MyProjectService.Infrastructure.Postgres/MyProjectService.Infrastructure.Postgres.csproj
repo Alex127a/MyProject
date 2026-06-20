@@ -4,4 +4,8 @@
     <ProjectReference Include="..\MyProjectService.Contracts\MyProjectService.Contracts.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
+  </ItemGroup>
+
 </Project>
