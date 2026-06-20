@@ -2,9 +2,13 @@ using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.EntityFrameworkCore;
 using MyProjectService.Infrastructure.Postgres;
 using Scalar.AspNetCore;
+using DotNetEnv;
 
 
 var builder = WebApplication.CreateBuilder(args);
+
+
+Env.Load("..\\..\\..\\..\\backend\\.env");
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddOpenApi();
