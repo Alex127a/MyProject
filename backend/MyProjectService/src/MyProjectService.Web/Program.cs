@@ -3,14 +3,25 @@ using Microsoft.EntityFrameworkCore;
 using MyProjectService.Infrastructure.Postgres;
 using Scalar.AspNetCore;
 using DotNetEnv;
+using Npgsql;
 
 
 var builder = WebApplication.CreateBuilder(args);
 
 
+
 Env.Load("..\\..\\..\\..\\backend\\.env");
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+var csb = new NpgsqlConnectionStringBuilder
+{
+    Host = Env.GetString("DB_HOST", "localhost"),
+    Port = Env.GetInt("DB_PORT", 5433),
+    Database = Env.GetString("DB_NAME"),
+    Username = Env.GetString("DB_USER"),
+    Password = Env.GetString("DB_PASSWORD")
+};
+var connectionString = csb.ConnectionString;
+
 builder.Services.AddOpenApi();
 
 builder.Services.AddDbContext<AppDBContext>(options =>
@@ -35,7 +46,4 @@ if (!app.Environment.IsProduction())
         options.OpenApiRoutePattern = "/openapi/{documentName}.json";
     });
 }
-
-
-
 await app.RunAsync();   
