@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MyProjectService.Infrastructure.Postgres.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    [Migration("20260630174010_AddAllEntitiesAndRelations")]
-    partial class AddAllEntitiesAndRelations
+    [Migration("20260630181159_InitialAllTables")]
+    partial class InitialAllTables
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

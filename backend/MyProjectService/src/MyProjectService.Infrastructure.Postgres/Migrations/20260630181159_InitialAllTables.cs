@@ -6,24 +6,27 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace MyProjectService.Infrastructure.Postgres.Migrations
 {
     /// <inheritdoc />
-    public partial class AddAllEntitiesAndRelations : Migration
+    public partial class InitialAllTables : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropPrimaryKey(
-                name: "id",
-                table: "departments");
-
-            migrationBuilder.RenameColumn(
-                name: "Id",
-                table: "departments",
-                newName: "id");
-
-            migrationBuilder.AddPrimaryKey(
-                name: "PK_departments",
-                table: "departments",
-                column: "id");
+            migrationBuilder.CreateTable(
+                name: "departments",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    parent_id = table.Column<Guid>(type: "uuid", maxLength: 50, nullable: false),
+                    name = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    slug = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
+                    path = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
+                    created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    updated = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_departments", x => x.id);
+                });
 
             migrationBuilder.CreateTable(
                 name: "locations",
@@ -163,21 +166,10 @@ namespace MyProjectService.Infrastructure.Postgres.Migrations
                 name: "locations");
 
             migrationBuilder.DropTable(
+                name: "departments");
+
+            migrationBuilder.DropTable(
                 name: "positions");
-
-            migrationBuilder.DropPrimaryKey(
-                name: "PK_departments",
-                table: "departments");
-
-            migrationBuilder.RenameColumn(
-                name: "id",
-                table: "departments",
-                newName: "Id");
-
-            migrationBuilder.AddPrimaryKey(
-                name: "id",
-                table: "departments",
-                column: "Id");
         }
     }
 }
