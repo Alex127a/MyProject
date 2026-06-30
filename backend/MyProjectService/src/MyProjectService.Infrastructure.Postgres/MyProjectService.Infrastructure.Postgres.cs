@@ -20,12 +20,11 @@ namespace MyProjectService.Infrastructure.Postgres
         public DbSet<Position> Positions { get; set; }
         public DbSet<DepartmentLocation> DepartmentLocations { get; set; }
         public DbSet<DepartmentPosition> DepartmentPositions { get; set; }
-    
-        
-    
-    
-    
-    }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDBContext).Assembly);
+        }
+   
   
-
+    }
 }

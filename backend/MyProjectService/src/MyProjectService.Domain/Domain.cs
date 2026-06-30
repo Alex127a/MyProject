@@ -9,6 +9,9 @@ namespace MyProjectService.Domain
         {
             Value = value;
         }
+        
+        private Name() : this(string.Empty) { }
+        
         public static Name Create(string value)
         {
             if (string.IsNullOrWhiteSpace(value))
@@ -24,6 +27,7 @@ namespace MyProjectService.Domain
     {
         public string Value { get; }
 
+        private Address() : this(string.Empty) { }
         private Address(string value)
         {
             Value = value;
@@ -60,8 +64,10 @@ namespace MyProjectService.Domain
     
         public IReadOnlyList<DepartmentLocation> DepartmentLocations => _departmentlocations;
         public IReadOnlyList<DepartmentPosition> DepartmentPositions => _departmentpositions;
-    
-        public Department(Guid id, Guid? parentId, Name name, string slug, string parentPath)
+          
+          
+           
+            public Department(Guid id, Guid? parentId, Name name, string slug, string parentPath)
         {
             Id = id;
             this.parentId = parentId ?? Guid.Empty;
@@ -73,8 +79,9 @@ namespace MyProjectService.Domain
             _departmentlocations = new List<DepartmentLocation>();
             _departmentpositions = new List<DepartmentPosition>();
         }
+        private Department() { } 
+        
     }
-
     public class Location
     {
          public Guid Id { get; }
@@ -94,6 +101,10 @@ namespace MyProjectService.Domain
              createdAt = DateTime.UtcNow;
              updatedAt = DateTime.UtcNow;
          }
+         private Location() { }
+        
+    
+    
     
     }
     
@@ -113,8 +124,8 @@ namespace MyProjectService.Domain
             createdAt = DateTime.UtcNow;
             updatedAt = DateTime.UtcNow;
         }
-    
-    
+         private Position() { }
+         
     }
 
     public class DepartmentLocation
@@ -133,7 +144,8 @@ namespace MyProjectService.Domain
             this.departmentId = departmentId;
             this.locationId = locationId;
             this.isPrimary = isPrimary;
-        }
+        } 
+       private DepartmentLocation() { }
     }
   
     public class DepartmentPosition
@@ -150,7 +162,9 @@ namespace MyProjectService.Domain
                 this.departmentId = departmentId;
                 this.positionId = positionId;
             }
+         private DepartmentPosition() { }
+    
     }
 }
-    
+  
 

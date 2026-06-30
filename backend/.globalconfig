@@ -39,6 +39,13 @@ dotnet_diagnostic.S1135.severity = none
 # S1144: неиспользуемые private члены — ложные срабатывания на EF shadow props
 dotnet_diagnostic.S1144.severity = none
 
+# CS8618: Неинициализированные non-nullable поля (отключаем глобально для всего проекта)
+dotnet_diagnostic.CS8618.severity = none
+
+# CA1861: Выделение постоянного массива — ложные срабатывания в автогенерируемых миграциях EF Core
+dotnet_diagnostic.CA1861.severity = none
+
+
 # Правила строже, чем по умолчанию:
 dotnet_diagnostic.S1125.severity = error  # Redundant Boolean literal
 dotnet_diagnostic.S6673.severity = error  # Serilog template placeholder order
