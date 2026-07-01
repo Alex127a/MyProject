@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MyProjectService.Infrastructure.Postgres.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    [Migration("20260630181159_InitialAllTables")]
-    partial class InitialAllTables
+    [Migration("20260701083132_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -32,28 +32,27 @@ namespace MyProjectService.Infrastructure.Postgres.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
-                    b.Property<DateTime>("createdAt")
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created");
 
-                    b.Property<Guid>("parentId")
-                        .HasMaxLength(50)
+                    b.Property<Guid>("ParentId")
                         .HasColumnType("uuid")
                         .HasColumnName("parent_id");
 
-                    b.Property<string>("path")
+                    b.Property<string>("Path")
                         .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("character varying(500)")
                         .HasColumnName("path");
 
-                    b.Property<string>("slug")
+                    b.Property<string>("Slug")
                         .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("character varying(500)")
                         .HasColumnName("slug");
 
-                    b.Property<DateTime>("updatedAt")
+                    b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("updated");
 
@@ -69,28 +68,23 @@ namespace MyProjectService.Infrastructure.Postgres.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
-                    b.Property<Guid?>("DepartmentId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("departmentId")
+                    b.Property<Guid>("DepartmentId")
                         .HasColumnType("uuid")
                         .HasColumnName("department_id");
 
-                    b.Property<bool>("isPrimary")
+                    b.Property<bool>("IsPrimary")
                         .HasColumnType("boolean")
                         .HasColumnName("is_primary");
 
-                    b.Property<Guid>("locationId")
+                    b.Property<Guid>("LocationId")
                         .HasColumnType("uuid")
                         .HasColumnName("location_id");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DepartmentId");
+                    b.HasIndex("LocationId");
 
-                    b.HasIndex("locationId");
-
-                    b.HasIndex("departmentId", "locationId")
+                    b.HasIndex("DepartmentId", "LocationId")
                         .IsUnique();
 
                     b.ToTable("department_locations", (string)null);
@@ -103,24 +97,19 @@ namespace MyProjectService.Infrastructure.Postgres.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
-                    b.Property<Guid?>("DepartmentId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("departmentId")
+                    b.Property<Guid>("DepartmentId")
                         .HasColumnType("uuid")
                         .HasColumnName("department_id");
 
-                    b.Property<Guid>("positionId")
+                    b.Property<Guid>("PositionId")
                         .HasColumnType("uuid")
                         .HasColumnName("position_id");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DepartmentId");
+                    b.HasIndex("PositionId");
 
-                    b.HasIndex("positionId");
-
-                    b.HasIndex("departmentId", "positionId")
+                    b.HasIndex("DepartmentId", "PositionId")
                         .IsUnique();
 
                     b.ToTable("department_positions", (string)null);
@@ -133,11 +122,11 @@ namespace MyProjectService.Infrastructure.Postgres.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
-                    b.Property<DateTime>("createdAt")
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created");
 
-                    b.Property<DateTime>("updatedAt")
+                    b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("updated");
 
@@ -153,11 +142,11 @@ namespace MyProjectService.Infrastructure.Postgres.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
-                    b.Property<DateTime>("createdAt")
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created");
 
-                    b.Property<DateTime>("updatedAt")
+                    b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("updated");
 
@@ -195,17 +184,13 @@ namespace MyProjectService.Infrastructure.Postgres.Migrations
                 {
                     b.HasOne("MyProjectService.Domain.Department", null)
                         .WithMany("DepartmentLocations")
-                        .HasForeignKey("DepartmentId");
-
-                    b.HasOne("MyProjectService.Domain.Department", null)
-                        .WithMany()
-                        .HasForeignKey("departmentId")
+                        .HasForeignKey("DepartmentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("MyProjectService.Domain.Location", null)
                         .WithMany()
-                        .HasForeignKey("locationId")
+                        .HasForeignKey("LocationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -214,24 +199,20 @@ namespace MyProjectService.Infrastructure.Postgres.Migrations
                 {
                     b.HasOne("MyProjectService.Domain.Department", null)
                         .WithMany("DepartmentPositions")
-                        .HasForeignKey("DepartmentId");
-
-                    b.HasOne("MyProjectService.Domain.Department", null)
-                        .WithMany()
-                        .HasForeignKey("departmentId")
+                        .HasForeignKey("DepartmentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("MyProjectService.Domain.Position", null)
                         .WithMany()
-                        .HasForeignKey("positionId")
+                        .HasForeignKey("PositionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
             modelBuilder.Entity("MyProjectService.Domain.Location", b =>
                 {
-                    b.OwnsOne("MyProjectService.Domain.Address", "address", b1 =>
+                    b.OwnsOne("MyProjectService.Domain.Address", "Address", b1 =>
                         {
                             b1.Property<Guid>("LocationId")
                                 .HasColumnType("uuid");
@@ -269,10 +250,10 @@ namespace MyProjectService.Infrastructure.Postgres.Migrations
                                 .HasForeignKey("LocationId");
                         });
 
-                    b.Navigation("Name")
+                    b.Navigation("Address")
                         .IsRequired();
 
-                    b.Navigation("address")
+                    b.Navigation("Name")
                         .IsRequired();
                 });
 

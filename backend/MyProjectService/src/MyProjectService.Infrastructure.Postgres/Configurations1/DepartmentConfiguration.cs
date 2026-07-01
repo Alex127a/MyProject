@@ -13,9 +13,7 @@ public class DepartmentConfiguration : IEntityTypeConfiguration<Department>
     builder.Property(d => d.Id).HasColumnName("id");
 
     builder
-    .Property(d => d.parentId)
-    .IsRequired()
-    .HasMaxLength(LengthConstants.LENGTH50)
+    .Property(d => d.ParentId)
     .HasColumnName("parent_id");
 
     builder.OwnsOne(d => d.Name, nameBuilder =>
@@ -27,25 +25,25 @@ public class DepartmentConfiguration : IEntityTypeConfiguration<Department>
     });
 
     builder
-    .Property(d => d.slug)
+    .Property(d => d.Slug)
     .IsRequired()
     .HasMaxLength(LengthConstants.LENGTH500)
     .HasColumnName("slug");
 
     builder
-    .Property(d => d.path)
+    .Property(d => d.Path)
     .IsRequired()
     .HasMaxLength(LengthConstants.LENGTH500)
     .HasColumnName("path");
 
     builder
-    .Property(d => d.createdAt)
+    .Property(d => d.CreatedAt)
     .IsRequired()
     .HasColumnName("created");
 
      
     builder
-    .Property(d => d.updatedAt)
+    .Property(d => d.UpdatedAt)
     .IsRequired()
     .HasColumnName("updated");
      
@@ -70,7 +68,7 @@ public class LocationConfiguration : IEntityTypeConfiguration<Location>
             .HasColumnName("name"); 
     });
 
-      builder.OwnsOne(l => l.address, addressBuilder =>
+      builder.OwnsOne(l => l.Address, addressBuilder =>
         {
             addressBuilder.Property(a => a.Value)
                 .IsRequired()
@@ -79,13 +77,13 @@ public class LocationConfiguration : IEntityTypeConfiguration<Location>
         });
     
     builder
-    .Property(l => l.createdAt)
+    .Property(l => l.CreatedAt)
     .IsRequired()
     .HasColumnName("created");
 
      
     builder
-    .Property( l => l.updatedAt)
+    .Property( l => l.UpdatedAt)
     .IsRequired()
     .HasColumnName("updated");
      
@@ -111,13 +109,13 @@ public class PositionConfiguration : IEntityTypeConfiguration<Position>
     });
 
     builder
-    .Property(p => p.createdAt)
+    .Property(p => p.CreatedAt)
     .IsRequired()
     .HasColumnName("created");
 
      
     builder
-    .Property(p => p.updatedAt)
+    .Property(p => p.UpdatedAt)
     .IsRequired()
     .HasColumnName("updated");
      
@@ -136,31 +134,31 @@ public class DepartmentLocationConfiguration : IEntityTypeConfiguration<Departme
     
     
     
-     builder.Property(dl => dl.departmentId)
+     builder.Property(dl => dl.DepartmentId)
             .IsRequired()
             .HasColumnName("department_id");
 
      
-    builder.Property(dl => dl.locationId)
+    builder.Property(dl => dl.LocationId)
             .IsRequired()
             .HasColumnName("location_id");
      
-      builder.Property(dl => dl.isPrimary)
+      builder.Property(dl => dl.IsPrimary)
             .IsRequired()
             .HasColumnName("is_primary");
      
       builder.HasOne<Department>()
-         .WithMany()
-         .HasForeignKey(dl => dl.departmentId)
+         .WithMany(d => d.DepartmentLocations)
+         .HasForeignKey(dl => dl.DepartmentId)
          .OnDelete(DeleteBehavior.Cascade);
 
      
       builder.HasOne<Location>()                                      
           .WithMany()                                                 
-          .HasForeignKey(dl => dl.locationId)                         
+          .HasForeignKey(dl => dl.LocationId)                         
           .OnDelete(DeleteBehavior.Cascade);
 
-      builder.HasIndex(dl => new { dl.departmentId, dl.locationId }).IsUnique();       
+      builder.HasIndex(dl => new { dl.DepartmentId, dl.LocationId }).IsUnique();       
 }
 }
 
@@ -174,27 +172,27 @@ public class DepartmentPositionConfiguration : IEntityTypeConfiguration<Departme
     builder.Property(dp => dp.Id).HasColumnName("id");
     
     
-     builder.Property(dp => dp.departmentId)
+     builder.Property(dp => dp.DepartmentId)
             .IsRequired()
             .HasColumnName("department_id");
 
      
-    builder.Property(dp => dp.positionId)
+    builder.Property(dp => dp.PositionId)
             .IsRequired()
             .HasColumnName("position_id");
      
     builder.HasOne<Department>()
-         .WithMany()
-         .HasForeignKey(dl => dl.departmentId)
+         .WithMany(d => d.DepartmentPositions)
+         .HasForeignKey(dp => dp.DepartmentId)
          .OnDelete(DeleteBehavior.Cascade);
 
      
       builder.HasOne<Position>()                                      
-          .WithMany()                                                 
-          .HasForeignKey(dl => dl.positionId)                         
+          .WithMany()                                                
+          .HasForeignKey(dp => dp.PositionId)                         
           .OnDelete(DeleteBehavior.Cascade);
 
-      builder.HasIndex(dl => new { dl.departmentId, dl.positionId }).IsUnique();
+      builder.HasIndex(dp => new { dp.DepartmentId, dp.PositionId }).IsUnique();
 
 }
 }

@@ -51,16 +51,16 @@ namespace MyProjectService.Domain
          private readonly List<DepartmentLocation> _departmentlocations;
          private readonly List<DepartmentPosition> _departmentpositions;
          public Guid Id { get; }
-         public Guid parentId { get; private set; }  
+         public Guid ParentId { get; private set; }  
          public Name Name { get; private set; }         
     
-         public string slug { get; private set; }
+         public string Slug { get; private set; }
                 
-         public string path { get; private set; }    
+         public string Path { get; private set; }    
           
-         public DateTime createdAt { get; private set; }
+         public DateTime CreatedAt { get; private set; }
 
-         public DateTime updatedAt { get; private set; }
+         public DateTime UpdatedAt { get; private set; }
     
         public IReadOnlyList<DepartmentLocation> DepartmentLocations => _departmentlocations;
         public IReadOnlyList<DepartmentPosition> DepartmentPositions => _departmentpositions;
@@ -70,12 +70,12 @@ namespace MyProjectService.Domain
             public Department(Guid id, Guid? parentId, Name name, string slug, string parentPath)
         {
             Id = id;
-            this.parentId = parentId ?? Guid.Empty;
+            this.ParentId = parentId ?? Guid.Empty;
             this.Name = name ?? throw new ArgumentNullException(nameof(name));
-            this.slug = slug;
-            path = string.IsNullOrEmpty(parentPath) ? slug : $"{parentPath}/{slug}";
-            createdAt = DateTime.UtcNow;
-            updatedAt = DateTime.UtcNow;
+            this.Slug = slug;
+            this.Path = string.IsNullOrEmpty(parentPath) ? slug : $"{parentPath}/{slug}";
+            this.CreatedAt = DateTime.UtcNow;
+            this.UpdatedAt = DateTime.UtcNow;
             _departmentlocations = new List<DepartmentLocation>();
             _departmentpositions = new List<DepartmentPosition>();
         }
@@ -87,19 +87,19 @@ namespace MyProjectService.Domain
          public Guid Id { get; }
          public Name Name { get; private set; }         
              
-         public Address address { get; private set; }
+         public Address Address { get; private set; }
 
-         public DateTime createdAt { get; private set; }
+         public DateTime CreatedAt { get; private set; }
 
-         public DateTime updatedAt { get; private set; }
+         public DateTime UpdatedAt { get; private set; }
     
          public Location(Guid id, Name name, Address address)
          {
              Id = id;
              this.Name = name ?? throw new ArgumentNullException(nameof(name));
-             this.address = address ?? throw new ArgumentNullException(nameof(address));
-             createdAt = DateTime.UtcNow;
-             updatedAt = DateTime.UtcNow;
+             this.Address = address ?? throw new ArgumentNullException(nameof(address));
+             this.CreatedAt = DateTime.UtcNow;
+             this.UpdatedAt = DateTime.UtcNow;
          }
          private Location() { }
         
@@ -113,16 +113,16 @@ namespace MyProjectService.Domain
          public Guid Id { get; }          
          public Name Name { get; private set; }         
              
-         public DateTime createdAt { get; private set; }
+         public DateTime CreatedAt { get; private set; }
 
-         public DateTime updatedAt { get; private set; }
+         public DateTime UpdatedAt { get; private set; }
 
         public Position(Guid id, Name name)
         {
             Id = id;
             this.Name = name ?? throw new ArgumentNullException(nameof(name));
-            createdAt = DateTime.UtcNow;
-            updatedAt = DateTime.UtcNow;
+            this.CreatedAt = DateTime.UtcNow;
+            this.UpdatedAt = DateTime.UtcNow;
         }
          private Position() { }
          
@@ -132,18 +132,18 @@ namespace MyProjectService.Domain
     {
          public Guid Id { get; }
         
-         public Guid departmentId { get; }
+         public Guid DepartmentId { get; }
         
-         public Guid locationId { get; }
+         public Guid LocationId { get; }
 
-         public bool isPrimary { get; private set; }    
+         public bool IsPrimary { get; private set; }    
     
         public DepartmentLocation(Guid id, Guid departmentId, Guid locationId, bool isPrimary)
         {
             Id = id;
-            this.departmentId = departmentId;
-            this.locationId = locationId;
-            this.isPrimary = isPrimary;
+            this.DepartmentId = departmentId;
+            this.LocationId = locationId;
+            this.IsPrimary = isPrimary;
         } 
        private DepartmentLocation() { }
     }
@@ -152,15 +152,15 @@ namespace MyProjectService.Domain
     {
          public Guid Id { get; }
           
-         public Guid departmentId { get; }
+         public Guid DepartmentId { get; }
         
-         public Guid positionId { get; }
+         public Guid PositionId { get; }
    
             public DepartmentPosition(Guid id, Guid departmentId, Guid positionId)
             {
                 Id = id;
-                this.departmentId = departmentId;
-                this.positionId = positionId;
+                this.DepartmentId = departmentId;
+                this.PositionId = positionId;
             }
          private DepartmentPosition() { }
     

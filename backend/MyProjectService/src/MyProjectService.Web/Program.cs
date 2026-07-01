@@ -8,9 +8,10 @@ using Npgsql;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
-
-Env.Load("..\\..\\..\\..\\backend\\.env");
+if (builder.Environment.IsDevelopment())
+{
+    Env.Load(); 
+}
 
 var csb = new NpgsqlConnectionStringBuilder
 {

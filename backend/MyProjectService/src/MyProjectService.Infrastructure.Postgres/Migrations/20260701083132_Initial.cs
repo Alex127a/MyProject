@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace MyProjectService.Infrastructure.Postgres.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialAllTables : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -16,7 +16,7 @@ namespace MyProjectService.Infrastructure.Postgres.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
-                    parent_id = table.Column<Guid>(type: "uuid", maxLength: 50, nullable: false),
+                    parent_id = table.Column<Guid>(type: "uuid", nullable: false),
                     name = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     slug = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
                     path = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
@@ -64,17 +64,11 @@ namespace MyProjectService.Infrastructure.Postgres.Migrations
                     id = table.Column<Guid>(type: "uuid", nullable: false),
                     department_id = table.Column<Guid>(type: "uuid", nullable: false),
                     location_id = table.Column<Guid>(type: "uuid", nullable: false),
-                    is_primary = table.Column<bool>(type: "boolean", nullable: false),
-                    DepartmentId = table.Column<Guid>(type: "uuid", nullable: true)
+                    is_primary = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_department_locations", x => x.id);
-                    table.ForeignKey(
-                        name: "FK_department_locations_departments_DepartmentId",
-                        column: x => x.DepartmentId,
-                        principalTable: "departments",
-                        principalColumn: "id");
                     table.ForeignKey(
                         name: "FK_department_locations_departments_department_id",
                         column: x => x.department_id,
@@ -95,17 +89,11 @@ namespace MyProjectService.Infrastructure.Postgres.Migrations
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
                     department_id = table.Column<Guid>(type: "uuid", nullable: false),
-                    position_id = table.Column<Guid>(type: "uuid", nullable: false),
-                    DepartmentId = table.Column<Guid>(type: "uuid", nullable: true)
+                    position_id = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_department_positions", x => x.id);
-                    table.ForeignKey(
-                        name: "FK_department_positions_departments_DepartmentId",
-                        column: x => x.DepartmentId,
-                        principalTable: "departments",
-                        principalColumn: "id");
                     table.ForeignKey(
                         name: "FK_department_positions_departments_department_id",
                         column: x => x.department_id,
@@ -127,11 +115,6 @@ namespace MyProjectService.Infrastructure.Postgres.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_department_locations_DepartmentId",
-                table: "department_locations",
-                column: "DepartmentId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_department_locations_location_id",
                 table: "department_locations",
                 column: "location_id");
@@ -141,11 +124,6 @@ namespace MyProjectService.Infrastructure.Postgres.Migrations
                 table: "department_positions",
                 columns: new[] { "department_id", "position_id" },
                 unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_department_positions_DepartmentId",
-                table: "department_positions",
-                column: "DepartmentId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_department_positions_position_id",
