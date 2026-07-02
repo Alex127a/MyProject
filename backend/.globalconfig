@@ -45,6 +45,9 @@ dotnet_diagnostic.CS8618.severity = none
 # CA1861: Выделение постоянного массива — ложные срабатывания в автогенерируемых миграциях EF Core
 dotnet_diagnostic.CA1861.severity = none
 
+# Отключаем правило CA1515 (Consider making types internal) для всего решения
+dotnet_diagnostic.CA1515.severity = none
+
 
 # Правила строже, чем по умолчанию:
 dotnet_diagnostic.S1125.severity = error  # Redundant Boolean literal
