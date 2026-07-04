@@ -33,10 +33,6 @@ builder.Services.AddHealthChecks();
 
 var app = builder.Build();
 
-app.MapGet("/", () => "Hello World!");
-
-app.MapGet("/api/health", () => "ОК");
-
 app.MapControllers();   
 
 if (!app.Environment.IsProduction())
