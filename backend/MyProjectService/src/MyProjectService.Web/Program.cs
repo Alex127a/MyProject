@@ -4,7 +4,9 @@ using MyProjectService.Infrastructure.Postgres;
 using Scalar.AspNetCore;
 using DotNetEnv;
 using Npgsql;
-
+using FluentValidation;
+using MyProjectService.Core;
+using MyProjectService.Contracts;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,12 +25,14 @@ var csb = new NpgsqlConnectionStringBuilder
 };
 var connectionString = csb.ConnectionString;
 
-builder.Services.AddOpenApi();
+
 
 builder.Services.AddDbContext<AppDBContext>(options =>
     options.UseNpgsql(connectionString));
 
 builder.Services.AddControllers();
+builder.Services.AddScoped<IValidator<CreateLocationDto>, CreateLocationValidator>();
+builder.Services.AddScoped<LocationsService>();
 builder.Services.AddHealthChecks();
 
 var app = builder.Build();
@@ -37,7 +41,7 @@ app.MapControllers();
 
 if (!app.Environment.IsProduction())
 {
-    app.MapOpenApi("/openapi/{documentName}.json");
+    
     app.MapScalarApiReference("/scalar", options =>
     {
         options.OpenApiRoutePattern = "/openapi/{documentName}.json";

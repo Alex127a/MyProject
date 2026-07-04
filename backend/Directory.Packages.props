@@ -8,11 +8,14 @@
   <ItemGroup>
     <!-- HTTP / OpenAPI -->
     <PackageVersion Include="DotNetEnv" Version="3.2.0" />
+    <PackageVersion Include="FluentValidation" Version="8.3.0" />
     <PackageVersion Include="Microsoft.AspNetCore.OpenApi" Version="10.0.9" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.9">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageVersion>
+    <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.9" />
+    <PackageVersion Include="Microsoft.OpenApi" Version="3.7.0" />
     <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.2" />
     <PackageVersion Include="Scalar.AspNetCore" Version="2.16.3" />
     <!-- Анализаторы (версии здесь, подключение в Directory.Build.props) -->

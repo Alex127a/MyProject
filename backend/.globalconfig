@@ -48,6 +48,11 @@ dotnet_diagnostic.CA1861.severity = none
 # Отключаем правило CA1515 (Consider making types internal) для всего решения
 dotnet_diagnostic.CA1515.severity = none
 
+# Указываем, что правила применяются ко всем файлам C#
+dotnet_diagnostic.CA1848.severity = none
+
+# Отключаем требование стандартных конструкторов исключений
+dotnet_diagnostic.CA1032.severity = none
 
 # Правила строже, чем по умолчанию:
 dotnet_diagnostic.S1125.severity = error  # Redundant Boolean literal

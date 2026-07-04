@@ -1,18 +1,41 @@
 namespace MyProjectService.Web;
-
+using MyProjectService.Core;
 using Microsoft.AspNetCore.Mvc;
 using MyProjectService.Contracts;
+using FluentValidation;
 
 [ApiController]
 [Route("api/locations")]
 public class LocationController : ControllerBase
 {
-    [HttpPost]
-    public async Task<IActionResult> Create([FromBody] CreateLocationDto createLocation, CancellationToken cancellationToken)
+    private readonly LocationsService _locationsService;
+
+    public LocationController(LocationsService locationsService)
     {
-        await Task.CompletedTask;
-        Guid newLocationId = Guid.NewGuid();
-        return CreatedAtAction(nameof(GetById), new { locationId = newLocationId }, newLocationId);
+        _locationsService = locationsService ?? throw new ArgumentNullException(nameof(locationsService));
+    }
+    
+    [HttpPost]
+     public async Task<IActionResult> Create([FromBody] CreateLocationDto request, CancellationToken cancellationToken)
+    {
+        try
+        {
+            
+            var locationId = await _locationsService.Create(request, cancellationToken);
+            
+            
+            return CreatedAtAction(nameof(Create), new { id = locationId }, locationId);
+        }
+        catch (ValidationException ex)
+        {
+            
+            return BadRequest(new { errors = ex.Errors.Select(e => e.ErrorMessage) });
+        }
+        catch (LocationNameAlreadyExistsException ex)
+        {
+            
+            return Conflict(new { message = ex.Message });
+        }
     }
 
     [HttpGet("{locationId:guid}")]
