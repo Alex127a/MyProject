@@ -1,38 +1,50 @@
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.EntityFrameworkCore;
+using MyProjectService.Infrastructure.Postgres;
 using Scalar.AspNetCore;
+using DotNetEnv;
+using Npgsql;
+using FluentValidation;
+using MyProjectService.Core;
+using MyProjectService.Contracts;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddOpenApi();
+if (builder.Environment.IsDevelopment())
+{
+    Env.Load(); 
+}
+
+var csb = new NpgsqlConnectionStringBuilder
+{
+    Host = Env.GetString("DB_HOST", "localhost"),
+    Port = Env.GetInt("DB_PORT", 5433),
+    Database = Env.GetString("DB_NAME"),
+    Username = Env.GetString("DB_USER"),
+    Password = Env.GetString("DB_PASSWORD")
+};
+var connectionString = csb.ConnectionString;
+
+
+
+builder.Services.AddDbContext<AppDBContext>(options =>
+    options.UseNpgsql(connectionString));
 
 builder.Services.AddControllers();
+builder.Services.AddScoped<IValidator<CreateLocationDto>, CreateLocationValidator>();
+builder.Services.AddScoped<LocationsService>();
 builder.Services.AddHealthChecks();
 
 var app = builder.Build();
-
-app.MapGet("/", () => "Hello World!");
-
-app.MapHealthChecks("/api/health", new HealthCheckOptions
-{
-    ResponseWriter = async (context, report) =>
-    {
-        context.Response.StatusCode = StatusCodes.Status200OK;
-        context.Response.ContentType = "text/plain; charset=utf-8";
-        await context.Response.WriteAsync("ОК");
-    }
-});
 
 app.MapControllers();   
 
 if (!app.Environment.IsProduction())
 {
-    app.MapOpenApi("/openapi/{documentName}.json");
+    
     app.MapScalarApiReference("/scalar", options =>
     {
         options.OpenApiRoutePattern = "/openapi/{documentName}.json";
     });
 }
-
-
-
 await app.RunAsync();   
