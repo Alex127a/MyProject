@@ -1,83 +1,43 @@
-namespace MyProjectService.Web;
-using MyProjectService.Core;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using MyProjectService.Contracts;
-using FluentValidation;
+using MyProjectService.Core;
+
+namespace MyProjectService.Controllers;
 
 [ApiController]
-[Route("api/locations")]
-public class LocationController : ControllerBase
+[Route("locations")] // Задает базовый эндпоинт POST /locations
+public class LocationsController : ControllerBase
 {
-    private readonly LocationsService _locationsService;
+    private readonly CreateLocationHandler _handler;
 
-    public LocationController(LocationsService locationsService)
+    // Внедряем наш хендлер через DI контейнер
+    public LocationsController(CreateLocationHandler handler)
     {
-        _locationsService = locationsService ?? throw new ArgumentNullException(nameof(locationsService));
+        _handler = handler;
     }
-    
+
     [HttpPost]
-     public async Task<IActionResult> Create([FromBody] CreateLocationDto request, CancellationToken cancellationToken)
+    public async Task<IActionResult> CreateAsync(
+        [FromBody] CreateLocationDto request, 
+        CancellationToken cancellationToken)
     {
         try
         {
+            // Передаем DTO в хендлер и получаем Guid созданной локации
+            Guid locationId = await _handler.HandleAsync(request, cancellationToken);
             
-            var locationId = await _locationsService.Create(request, cancellationToken);
-            
-            
-            return CreatedAtAction(nameof(Create), new { id = locationId }, locationId);
+            // Возвращаем статус 200 OK (или 201 Created) вместе с ID новой локации
+            return Ok(new { Id = locationId });
         }
-        catch (ValidationException ex)
+        catch (InvalidOperationException ex)
         {
-            
-            return BadRequest(new { errors = ex.Errors.Select(e => e.ErrorMessage) });
+            // Перехватываем бизнес-исключение уникальности имени
+            // и возвращаем клиенту ошибку со статусом 400 Bad Request
+            return BadRequest(new { Message = ex.Message });
         }
-        catch (LocationNameAlreadyExistsException ex)
-        {
-            
-            return Conflict(new { message = ex.Message });
-        }
-    }
-
-    [HttpGet("{locationId:guid}")]
-    public async Task<IActionResult> GetById([FromRoute] Guid locationId, CancellationToken cancellationToken)
-    {
-        await Task.CompletedTask;
-        if (locationId == Guid.Empty) 
-        {
-            return NotFound();
-        }
-        var mockAddress = new AddressDto("Страна", "Город", "Улица", "Номер дома");
-        var locationResponse = new GetLocationDto(locationId, Guid.NewGuid(), "Sample Location", mockAddress);
-        return Ok(locationResponse);
-    }
-
-    [HttpGet]
-    public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
-    {
-        await Task.CompletedTask;
-        var mockAddress = new AddressDto("Страна", "Город", "Улица", "Номер дома");
-
-        var locations = new List<ListLocationsDto>
-        {
-            new(Guid.NewGuid(), "name location 1", mockAddress),
-            new(Guid.NewGuid(), "name location 2", mockAddress)
-        };
-        return Ok(locations);
-    }
-
-    [HttpPut("{locationId:guid}")]
-    public async Task<IActionResult> Update([FromRoute] Guid locationId, [FromBody] UpdateLocationDto updateLocation, CancellationToken cancellationToken)
-    {
-        await Task.CompletedTask;
-        if (locationId == Guid.Empty) return NotFound();
-        return NoContent();
-    }
-
-    [HttpDelete("{locationId:guid}")]
-    public async Task<IActionResult> Delete([FromRoute] Guid locationId, CancellationToken cancellationToken)
-    {
-        await Task.CompletedTask;
-        if (locationId == Guid.Empty) return NotFound();
-        return NoContent();
     }
 }
+
