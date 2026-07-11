@@ -1,0 +1,21 @@
+digraph CSharpDependencies {
+  graph [rankdir=LR, fontname="Helvetica", fontsize=14, splines=sprite, overlap=false, nodesep=0.2, ranksep=0.8];
+  node [shape=box, style=filled, fillcolor=lightblue, fontname="Helvetica", fontsize=11];
+  edge [fontname="Helvetica", fontsize=9];
+
+  "MyProjectService.Contracts" [label="MyProjectService.Contracts\n(unknown)"];
+  "MyProjectService.Core" [label="MyProjectService.Core\n(unknown)"];
+  "MyProjectService.Domain" [label="MyProjectService.Domain\n(unknown)"];
+  "MyProjectService.Infrastructure.Postgres" [label="MyProjectService.Infrastructure.Postgres\n(unknown)"];
+  "MyProjectService.Web" [label="MyProjectService.Web\n(net10.0)"];
+
+  // Project reference edges
+  "MyProjectService.Core" -> "MyProjectService.Contracts" [penwidth=1.0];
+  "MyProjectService.Core" -> "MyProjectService.Domain" [penwidth=1.0];
+  "MyProjectService.Infrastructure.Postgres" -> "MyProjectService.Contracts" [penwidth=1.0];
+  "MyProjectService.Infrastructure.Postgres" -> "MyProjectService.Domain" [penwidth=1.0];
+  "MyProjectService.Web" -> "MyProjectService.Contracts" [penwidth=1.0];
+  "MyProjectService.Web" -> "MyProjectService.Core" [penwidth=1.0];
+  "MyProjectService.Web" -> "MyProjectService.Domain" [penwidth=1.0];
+  "MyProjectService.Web" -> "MyProjectService.Infrastructure.Postgres" [penwidth=1.0];
+}

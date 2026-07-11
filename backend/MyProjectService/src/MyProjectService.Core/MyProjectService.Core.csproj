@@ -3,7 +3,15 @@
  
 
   <ItemGroup>
+    <ProjectReference Include="..\MyProjectService.Contracts\MyProjectService.Contracts.csproj" />
     <ProjectReference Include="..\MyProjectService.Domain\MyProjectService.Domain.csproj" />
+  </ItemGroup>
+
+ 
+
+  <ItemGroup>
+    <PackageReference Include="FluentValidation" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
   </ItemGroup>
 
 </Project>

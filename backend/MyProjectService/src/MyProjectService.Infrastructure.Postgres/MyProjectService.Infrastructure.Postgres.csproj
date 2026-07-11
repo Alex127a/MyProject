@@ -2,6 +2,13 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MyProjectService.Contracts\MyProjectService.Contracts.csproj" />
+    <ProjectReference Include="..\MyProjectService.Core\MyProjectService.Core.csproj" />
+    <ProjectReference Include="..\MyProjectService.Domain\MyProjectService.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dapper" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
   </ItemGroup>
 
 </Project>
